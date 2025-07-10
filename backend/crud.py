@@ -48,6 +48,8 @@ def update_produto(db: Session, produto_id: int, produto: ProdutoUpdate):
     if db_produto is None:
         return None
 
+    """
+    Alterar somente os campos.
     if produto.nome is not None:
         db_produto.nome = produto.nome
     if produto.descricao is not None:
@@ -58,7 +60,12 @@ def update_produto(db: Session, produto_id: int, produto: ProdutoUpdate):
         db_produto.categoria = produto.categoria
     if produto.email_fornecedor is not None:
         db_produto.email_fornecedor = produto.email_fornecedor
+    """
 
+    print(produto.model_dump(exclude_unset=True))  # Veja o que está chegando
+
+    for attr, value in produto.model_dump(exclude_unset=True).items():
+        setattr(db_produto, attr, value)
     """ Alternativamente, você pode usar o seguinte código para atualizar
     # todos os atributos que foram passados no objeto produto, ignorando os não definidos.
     
